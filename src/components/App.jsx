@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ContactForm } from './Form/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
+import { nanoid } from 'nanoid';
 
 export const App = () => {
   const [contacts, setContacts] = useState(
@@ -14,17 +15,24 @@ export const App = () => {
   }, [contacts]);
 
   const onSubmit = event => {
-    const loweredCase = event.name.toLowerCase().trim();
+    event.preventDefault();
 
-    const exists = contacts.some(
-      contact => contact.name.toLowerCase().trim() === loweredCase
-    );
+    const { name, number } = event.target.elements;
 
-    if (exists) {
-      alert(`${event.name} is already in contacts!`);
-    } else {
-      setContacts([...contacts, event]);
+    const contact = {
+      name: name.value,
+      number: number.value,
+      id: nanoid(),
+    };
+
+    if (contacts.find(contact => contact.name === name.value)) {
+      alert(`${name.value} is already in contacts`);
+      return;
     }
+
+    setContacts(prevContacts => [...contacts, contact]);
+
+    event.target.reset();
   };
 
   const onRemoveContact = id => {
