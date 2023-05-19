@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ContactForm } from './Form/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
+import { nanoid } from 'nanoid';
 
 export const App = () => {
   const [contacts, setContacts] = useState(
@@ -28,8 +29,7 @@ export const App = () => {
   };
 
   const onRemoveContact = id => {
-    const filtered = contacts.filter(contact => contact.id !== id);
-    setContacts(filtered);
+    setContacts(contacts.filter(contact => contact.id !== id));
   };
 
   const onChange = event => {
